@@ -6,7 +6,7 @@ import { Deposition } from './entities/deposition.entity';
 import { ListDepositionDto } from './dto/list-deposition.dto';
 
 @Injectable()
-export class DepositionsService {
+export class DepositionService {
   constructor(
     @InjectRepository(Deposition)
     private readonly depositionRepository: Repository<Deposition>
