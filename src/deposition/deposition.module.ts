@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DepositionsService } from './depositions.service';
-import { DepositionsController } from './depositions.controller';
+import { DepositionService } from './deposition.service';
+import { DepositionController } from './deposition.controller';
 import { Deposition } from './entities/deposition.entity';
 import { DepositionHomeController } from './deposition-home.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Deposition])],
-  controllers: [DepositionsController, DepositionHomeController],
-  providers: [DepositionsService]
+  controllers: [DepositionController, DepositionHomeController],
+  providers: [DepositionService]
 })
 export class DepositionsModule { }

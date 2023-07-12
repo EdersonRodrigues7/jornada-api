@@ -3,19 +3,18 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put
 } from '@nestjs/common';
-import { DepositionsService } from './depositions.service';
+import { DepositionService } from './deposition.service';
 import { CreateDepositionDto } from './dto/create-deposition.dto';
 import { UpdateDepositionDto } from './dto/update-deposition.dto';
 import { Deposition } from './entities/deposition.entity';
 
 @Controller('depositions')
-export class DepositionsController {
-  constructor(private readonly depositionsService: DepositionsService) { }
+export class DepositionController {
+  constructor(private readonly depositionService: DepositionService) { }
 
   @Post()
   create(@Body() createDepositionDto: CreateDepositionDto) {
@@ -25,7 +24,7 @@ export class DepositionsController {
     deposition.image = createDepositionDto.image;
     deposition.username = createDepositionDto.username;
 
-    this.depositionsService.create(deposition);
+    this.depositionService.create(deposition);
 
     return {
       message: "Deposition created successfully"
@@ -34,17 +33,17 @@ export class DepositionsController {
 
   @Get()
   findAll() {
-    return this.depositionsService.findAll();
+    return this.depositionService.findAll();
   }
 
   @Get('/:id')
   findOne(@Param('id') id: string) {
-    return this.depositionsService.findOne(+id);
+    return this.depositionService.findOne(+id);
   }
 
   @Get('/:home')
   list() {
-    return this.depositionsService.listDepositions();
+    return this.depositionService.listDepositions();
   }
 
   @Put('/:id')
@@ -52,7 +51,7 @@ export class DepositionsController {
     @Param('id') id: string,
     @Body() updateDepositionDto: UpdateDepositionDto,
   ) {
-    const updatedDeposition = await this.depositionsService.update(+id, updateDepositionDto);
+    const updatedDeposition = await this.depositionService.update(+id, updateDepositionDto);
     return {
       updated: updatedDeposition,
       message: "Deposition updated successfully!"
@@ -61,7 +60,7 @@ export class DepositionsController {
 
   @Delete('/:id')
   async remove(@Param('id') id: string) {
-    await this.depositionsService.remove(+id);
+    await this.depositionService.remove(+id);
     return {
       message: "Deposition deleted successfully"
     };

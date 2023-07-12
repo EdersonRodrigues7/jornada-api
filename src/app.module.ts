@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DepositionsModule } from './depositions/depositions.module';
+import { DepositionsModule } from './deposition/deposition.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { MysqlConfigService } from './config/mysql.config.service';
