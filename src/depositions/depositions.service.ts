@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDepositionDto } from './dto/create-deposition.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UpdateDepositionDto } from './dto/update-deposition.dto';
+import { Deposition } from './entities/deposition.entity';
+import { ListDepositionDto } from './dto/list-deposition.dto';
 
 @Injectable()
 export class DepositionsService {
-  create(createDepositionDto: CreateDepositionDto) {
-    return 'This action adds a new deposition';
+  constructor(
+    @InjectRepository(Deposition)
+    private readonly depositionRepository: Repository<Deposition>
+  ) { }
+
+  async create(deposition: Deposition) {
+    await this.depositionRepository.save(deposition);
   }
 
-  findAll() {
-    return `This action returns all depositions`;
+  async findAll() {
+    const depositions = await this.depositionRepository.find();
+    const allDepositions = depositions.map(
+      (deposition) => new ListDepositionDto(deposition.id, deposition.content, deposition.username)
+    );
+    return allDepositions;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} deposition`;
+  async findOne(id: number) {
+    const deposition = await this.depositionRepository.findOneBy({ id });
+    return deposition;
   }
 
-  update(id: number, updateDepositionDto: UpdateDepositionDto) {
-    return `This action updates a #${id} deposition`;
+  async listDepositions() {
+    const depositions = await this.depositionRepository.find({
+      take: 3,
+    });
+
+    const selectedDepositions = depositions.map(
+      (deposition) => new ListDepositionDto(deposition.id, deposition.content, deposition.username)
+    );
+    return selectedDepositions;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} deposition`;
+  async update(id: number, updateDepositionDto: UpdateDepositionDto) {
+    await this.depositionRepository.update(id, updateDepositionDto);
+  }
+
+  async remove(id: number) {
+    await this.depositionRepository.delete(id);
   }
 }
